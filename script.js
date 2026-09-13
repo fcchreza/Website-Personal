@@ -1,5 +1,11 @@
 // Efek Animasi Muncul Halus (Fade In) saat Scroll
 document.addEventListener('DOMContentLoaded', () => {
+    const pageLoader = document.querySelector('.page-loader');
+
+    window.addEventListener('load', () => {
+        window.setTimeout(() => pageLoader?.classList.add('is-hidden'), 350);
+    }, { once: true });
+
     const observerOptions = {
         threshold: 0.2
     };
