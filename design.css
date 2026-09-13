@@ -50,6 +50,60 @@ body::before {
     mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
 }
 
+.page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-content: center;
+    gap: 18px;
+    background: #020b13;
+    transition: opacity 0.55s ease, visibility 0.55s ease;
+}
+
+.page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-mark {
+    color: var(--text-color);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: center;
+    animation: loader-pulse 1.2s ease-in-out infinite;
+}
+
+.loader-mark span {
+    color: var(--accent-color);
+}
+
+.loader-track {
+    width: 150px;
+    height: 3px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.loader-track span {
+    display: block;
+    width: 45%;
+    height: 100%;
+    background: var(--accent-color);
+    animation: loader-slide 1s ease-in-out infinite;
+}
+
+@keyframes loader-pulse {
+    50% { opacity: 0.55; }
+}
+
+@keyframes loader-slide {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(320%); }
+}
+
 img {
     max-width: 100%;
     display: block;
@@ -89,6 +143,7 @@ nav ul {
 }
 
 nav a {
+    position: relative;
     color: var(--text-muted);
     text-decoration: none;
     transition: color 0.25s ease, transform 0.25s ease;
@@ -553,5 +608,46 @@ footer {
     .section {
         padding-left: 24px;
         padding-right: 24px;
+    }
+}
+
+nav li {
+    opacity: 0;
+    animation: menu-enter 0.5s ease forwards;
+    animation-delay: calc(var(--menu-index) * 90ms + 350ms);
+}
+
+nav li:not(:last-child) a::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -7px;
+    left: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.25s ease;
+}
+
+nav li:not(:last-child) a:hover::after,
+nav li:not(:last-child) a:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+@keyframes menu-enter {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
